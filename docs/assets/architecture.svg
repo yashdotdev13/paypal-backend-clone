@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="620" viewBox="0 0 1400 620">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#0b1220"/>
+    <stop offset="100%" stop-color="#111827"/>
+  </linearGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="8" stdDeviation="8" flood-opacity=".28"/>
+  </filter>
+</defs>
+<rect width="1400" height="620" rx="28" fill="url(#bg)"/>
+<text x="700" y="55" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="30" font-weight="700">PayPal Backend Clone — Distributed Payment Architecture</text>
+<text x="700" y="88" text-anchor="middle" fill="#9ca3af" font-family="Arial, sans-serif" font-size="16">Microservices • Event-Driven • Observable • Cloud-Native</text>
+
+<g font-family="Arial, sans-serif" text-anchor="middle" filter="url(#shadow)">
+  <rect x="555" y="120" width="290" height="58" rx="14" fill="#1f2937" stroke="#60a5fa"/>
+  <text x="700" y="156" fill="#fff" font-size="19" font-weight="700">Client / Frontend</text>
+
+  <rect x="555" y="205" width="290" height="58" rx="14" fill="#1f2937" stroke="#34d399"/>
+  <text x="700" y="241" fill="#fff" font-size="19" font-weight="700">API Gateway</text>
+
+  <rect x="80" y="330" width="185" height="58" rx="14" fill="#1f2937" stroke="#a78bfa"/>
+  <text x="172" y="366" fill="#fff" font-size="16" font-weight="700">Auth / User</text>
+
+  <rect x="295" y="330" width="205" height="58" rx="14" fill="#1f2937" stroke="#a78bfa"/>
+  <text x="397" y="366" fill="#fff" font-size="16" font-weight="700">Account / Merchant</text>
+
+  <rect x="530" y="330" width="220" height="58" rx="14" fill="#1f2937" stroke="#fbbf24"/>
+  <text x="640" y="366" fill="#fff" font-size="16" font-weight="700">Payment / Order</text>
+
+  <rect x="780" y="330" width="205" height="58" rx="14" fill="#1f2937" stroke="#fbbf24"/>
+  <text x="882" y="366" fill="#fff" font-size="16" font-weight="700">Payout / Balance</text>
+
+  <rect x="1015" y="330" width="305" height="58" rx="14" fill="#1f2937" stroke="#f97316"/>
+  <text x="1167" y="366" fill="#fff" font-size="16" font-weight="700">Apache Kafka / Event Contracts</text>
+
+  <rect x="210" y="475" width="210" height="58" rx="14" fill="#1f2937" stroke="#22d3ee"/>
+  <text x="315" y="511" fill="#fff" font-size="17" font-weight="700">MySQL</text>
+
+  <rect x="475" y="475" width="210" height="58" rx="14" fill="#1f2937" stroke="#ef4444"/>
+  <text x="580" y="511" fill="#fff" font-size="17" font-weight="700">Redis</text>
+
+  <rect x="740" y="475" width="210" height="58" rx="14" fill="#1f2937" stroke="#38bdf8"/>
+  <text x="845" y="511" fill="#fff" font-size="17" font-weight="700">Neo4j</text>
+
+  <rect x="1005" y="475" width="250" height="58" rx="14" fill="#1f2937" stroke="#34d399"/>
+  <text x="1130" y="511" fill="#fff" font-size="17" font-weight="700">Prometheus / Grafana / Zipkin</text>
+</g>
+
+<g stroke="#6b7280" stroke-width="2" fill="none" opacity=".9">
+  <path d="M700 178 L700 205"/>
+  <path d="M650 263 L172 330"/>
+  <path d="M675 263 L397 330"/>
+  <path d="M700 263 L640 330"/>
+  <path d="M725 263 L882 330"/>
+  <path d="M750 263 L1167 330"/>
+  <path d="M397 388 L315 475"/>
+  <path d="M640 388 L580 475"/>
+  <path d="M882 388 L845 475"/>
+  <path d="M1167 388 L1130 475"/>
+</g>
+</svg>
