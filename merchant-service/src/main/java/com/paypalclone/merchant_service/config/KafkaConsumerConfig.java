@@ -3,8 +3,11 @@ package com.paypalclone.merchant_service.config;
 import com.paypalclone.auth.UserRegisteredEvent;
 import com.paypalclone.user.UserKycUpdatedEvent;
 import com.paypalclone.user.UserRiskUpdatedEvent;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -20,15 +23,30 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
 
     private Map<String, Object> baseConsumerProps(String groupId) {
+
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+        props.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapServers
+        );
+
+        props.put(
+                ConsumerConfig.GROUP_ID_CONFIG,
+                groupId
+        );
+
+        props.put(
+                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
+                "earliest"
+        );
+
         return props;
     }
-
 
     @Bean
     public ConsumerFactory<String, UserKycUpdatedEvent>
@@ -55,7 +73,7 @@ public class KafkaConsumerConfig {
                 new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(userKycUpdatedConsumerFactory());
-        factory.setConcurrency(1); // keep 1 while debugging
+        factory.setConcurrency(1);
 
         return factory;
     }
@@ -89,6 +107,4 @@ public class KafkaConsumerConfig {
 
         return factory;
     }
-
-
 }

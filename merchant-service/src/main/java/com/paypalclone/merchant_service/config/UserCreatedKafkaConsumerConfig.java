@@ -3,6 +3,7 @@ package com.paypalclone.merchant_service.config;
 import com.paypalclone.user.UserCreatedEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -18,18 +19,34 @@ import java.util.Map;
 @EnableKafka
 public class UserCreatedKafkaConsumerConfig {
 
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
     @Bean
     public ConsumerFactory<String, UserCreatedEvent> userCreatedConsumerFactory() {
 
         JsonDeserializer<UserCreatedEvent> deserializer =
                 new JsonDeserializer<>(UserCreatedEvent.class);
+
         deserializer.addTrustedPackages("*");
         deserializer.setUseTypeHeaders(false);
 
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "merchant-service");
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+        props.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapServers
+        );
+
+        props.put(
+                ConsumerConfig.GROUP_ID_CONFIG,
+                "merchant-service"
+        );
+
+        props.put(
+                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
+                "earliest"
+        );
 
         return new DefaultKafkaConsumerFactory<>(
                 props,
@@ -46,6 +63,7 @@ public class UserCreatedKafkaConsumerConfig {
                 new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(userCreatedConsumerFactory());
+
         return factory;
     }
 }
