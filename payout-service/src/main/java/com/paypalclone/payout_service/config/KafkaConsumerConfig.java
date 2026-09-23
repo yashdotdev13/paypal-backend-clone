@@ -2,10 +2,14 @@ package com.paypalclone.payout_service.config;
 
 import com.paypalclone.PaymentIntent.PaymentIntentCapturedEvent;
 import com.paypalclone.ledger.LedgerTransactionCompletedEvent;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -18,16 +22,20 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
     private Map<String, Object> baseConsumerProps() {
+
         Map<String, Object> props = new HashMap<>();
 
         // ---- Kafka connection ----
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "kafka:9092"
+                bootstrapServers
         );
 
-        // ---- REQUIRED ----
+        // ---- Consumer group ----
         props.put(
                 ConsumerConfig.GROUP_ID_CONFIG,
                 "payout-service"
@@ -44,6 +52,7 @@ public class KafkaConsumerConfig {
                 ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
                 "earliest"
         );
+
         props.put(
                 ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,
                 false
@@ -51,7 +60,6 @@ public class KafkaConsumerConfig {
 
         return props;
     }
-
 
     @Bean
     public ConsumerFactory<String, PaymentIntentCapturedEvent>
@@ -81,6 +89,7 @@ public class KafkaConsumerConfig {
         );
 
         factory.setConcurrency(3);
+
         factory.getContainerProperties()
                 .setAckMode(ContainerProperties.AckMode.MANUAL);
 
@@ -115,10 +124,9 @@ public class KafkaConsumerConfig {
         );
 
         factory.setConcurrency(3);
+
         factory.getContainerProperties()
-                .setAckMode(
-                        org.springframework.kafka.listener.ContainerProperties.AckMode.MANUAL
-                );
+                .setAckMode(ContainerProperties.AckMode.MANUAL);
 
         return factory;
     }

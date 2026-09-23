@@ -1,12 +1,15 @@
 package com.paypalclone.payment_intent_service.config;
 
-
 import com.paypalclone.orders.OrderConfirmedEvent;
 import com.paypalclone.orders.OrderCreatedEvent;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -18,11 +21,28 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
     private Map<String, Object> baseProps() {
+
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "payment-intent-service");
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+        props.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapServers
+        );
+
+        props.put(
+                ConsumerConfig.GROUP_ID_CONFIG,
+                "payment-intent-service"
+        );
+
+        props.put(
+                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
+                "earliest"
+        );
+
         return props;
     }
 
@@ -34,6 +54,7 @@ public class KafkaConsumerConfig {
 
         JsonDeserializer<OrderCreatedEvent> deserializer =
                 new JsonDeserializer<>(OrderCreatedEvent.class);
+
         deserializer.addTrustedPackages("*");
 
         return new DefaultKafkaConsumerFactory<>(
@@ -49,7 +70,11 @@ public class KafkaConsumerConfig {
 
         ConcurrentKafkaListenerContainerFactory<String, OrderCreatedEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(orderCreatedConsumerFactory());
+
+        factory.setConsumerFactory(
+                orderCreatedConsumerFactory()
+        );
+
         return factory;
     }
 
@@ -61,6 +86,7 @@ public class KafkaConsumerConfig {
 
         JsonDeserializer<OrderConfirmedEvent> deserializer =
                 new JsonDeserializer<>(OrderConfirmedEvent.class);
+
         deserializer.addTrustedPackages("*");
 
         return new DefaultKafkaConsumerFactory<>(
@@ -76,7 +102,11 @@ public class KafkaConsumerConfig {
 
         ConcurrentKafkaListenerContainerFactory<String, OrderConfirmedEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(orderConfirmedConsumerFactory());
+
+        factory.setConsumerFactory(
+                orderConfirmedConsumerFactory()
+        );
+
         return factory;
     }
 }

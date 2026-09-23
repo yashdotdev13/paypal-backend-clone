@@ -22,11 +22,11 @@ public class MerchantController {
     public MerchantResponse createMerchant(
             @Valid @RequestBody CreateMerchantRequest request
     ) {
-        // 🔑 AUTH USER ID (from gateway / JWT)
+        //  AUTH USER ID (from gateway / JWT)
         String authUserId =
                 UserContextHolder.getCurrentUserId().toString();
 
-        // 🔑 MAP → INTERNAL USER ID
+        //  MAP → INTERNAL USER ID
         Long internalUserId =
                 mappingRepository.findByExternalAuthId(authUserId)
                         .orElseThrow(() ->
